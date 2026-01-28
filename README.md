@@ -4,7 +4,7 @@ Apptainer/Singularity container images for HPC clusters. Including build instruc
 
 ## Downloading Containers
 
-Pre-built container images are available on Hugging Face. You can download them using the `hf` cli:
+Pre-built container images are available on Hugging Face at [ellamind/containers](https://huggingface.co/datasets/ellamind/containers). You can download them using the `hf` cli:
 
 ### Download All Containers
 
@@ -51,6 +51,38 @@ singularity exec --nv --contain \
         --port 64444
 ```
 
+## SGLang
+
+### Available Images
+
+| Version | Image Path |
+|---------|------------|
+| v0.5.7 | `containers/sglang/sglang_v0.5.7.sif` |
+
+### Running
+
+Run the SGLang server on Leonardo:
+
+```bash
+TBD
+```
+
+## NeMo
+
+### Available Images
+
+| Version | Image Path |
+|---------|------------|
+| 25.11.nemotron_3_nano | `containers/nemo/nemo_25.11.nemotron_3_nano.sif` |
+
+### Running
+
+Run NeMo on Leonardo:
+
+```bash
+TBD
+```
+
 ## Building Containers
 Build scripts are in `./build-scripts`. For now, we build all containers on Leonardo.
 
@@ -60,7 +92,19 @@ For example, to build a vLLM container on Leonardo:
 TAG=v0.14.1 ./build_scripts/leonardo/build_vllm.sh
 ```
 
-Build logs are saved to `build_logs/vllm_build.log`.
+To build an SGLang container:
+
+```bash
+TAG=v0.5.7 ./build_scripts/leonardo/build_sglang.sh
+```
+
+To build a NeMo container:
+
+```bash
+TAG=25.11.nemotron_3_nano ./build_scripts/leonardo/build_nemo.sh
+```
+
+Build logs are saved to `build_logs/<container>_build.log`.
 
 ## Uploading to Hugging Face
 
