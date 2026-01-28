@@ -1,0 +1,27 @@
+==========================================
+SGLang Container Build
+==========================================
+Start time: Wed Jan 28 13:40:43 CET 2026
+Version: v0.5.7
+Output: /leonardo_work/AIFAC_L01_028/midahl00/cluster-containers/containers/sglang/sglang_v0.5.7.sif
+Log file: /leonardo_work/AIFAC_L01_028/midahl00/cluster-containers/build_logs/sglang_build.log
+Cache dir: /leonardo_scratch/large/userexternal/midahl00/.singularity/cache
+==========================================
+
+srun: job 33038301 queued and waiting for resources
+srun: job 33038301 has been allocated resources
+SINGULARITY_TMPDIR: /tmp
+TMPDIR: /tmp
+Filesystem                             Size  Used Avail Use% Mounted on
+/dev/mapper/extra_vg-scratch_local_lv  200G     0  200G   0% /tmp
+INFO:    Converting OCI blobs to SIF format
+INFO:    Starting build...
+INFO:    Fetching OCI image...
+INFO:    Extracting OCI image...
+2026/01/28 13:43:21  warn rootless{usr/lib/x86_64-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-ptp-helper} ignoring (usually) harmless EPERM on setxattr "security.capability"
+INFO:    Inserting Singularity configuration...
+INFO:    Creating SIF file...
+
+==========================================
+End time: Wed Jan 28 14:10:11 CET 2026
+==========================================

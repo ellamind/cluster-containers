@@ -1,0 +1,6 @@
+# Ignore container images (large binaries)
+*.sif
+
+# pixi environments
+.pixi
+*.egg-info
