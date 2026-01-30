@@ -1,0 +1,27 @@
+==========================================
+Axolotl Container Build
+==========================================
+Start time: Fri Jan 30 11:51:47 CET 2026
+Version: main-py3.12-cu129-2.9.1
+Docker image: axolotlai/axolotl:main-py3.12-cu129-2.9.1
+Output: /leonardo_work/AIFAC_L01_028/midahl00/cluster-containers/containers/axolotl/axolotl_main-py3.12-cu129-2.9.1.sif
+Log file: /leonardo_work/AIFAC_L01_028/midahl00/cluster-containers/build_logs/axolotl_build.log
+Cache dir: /leonardo_scratch/large/userexternal/midahl00/.singularity/cache
+==========================================
+
+srun: job 33165324 queued and waiting for resources
+srun: job 33165324 has been allocated resources
+SINGULARITY_TMPDIR: /tmp
+TMPDIR: /tmp
+Filesystem                             Size  Used Avail Use% Mounted on
+/dev/mapper/extra_vg-scratch_local_lv  200G     0  200G   0% /tmp
+INFO:    Converting OCI blobs to SIF format
+INFO:    Starting build...
+INFO:    Fetching OCI image...
+INFO:    Extracting OCI image...
+INFO:    Inserting Singularity configuration...
+INFO:    Creating SIF file...
+
+==========================================
+End time: Fri Jan 30 12:09:42 CET 2026
+==========================================

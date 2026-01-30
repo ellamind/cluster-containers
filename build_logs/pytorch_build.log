@@ -1,0 +1,23 @@
+==========================================
+PyTorch Container Build
+==========================================
+Start time: Fri Jan 30 11:35:46 CET 2026
+Version: 26.01-py3
+Docker image: nvcr.io/nvidia/pytorch:26.01-py3
+Output: /leonardo_work/AIFAC_L01_028/midahl00/cluster-containers/containers/pytorch/pytorch_26.01-py3.sif
+Log file: /leonardo_work/AIFAC_L01_028/midahl00/cluster-containers/build_logs/pytorch_build.log
+Cache dir: /leonardo_scratch/large/userexternal/midahl00/.singularity/cache
+==========================================
+
+srun: job 33164459 queued and waiting for resources
+srun: job 33164459 has been allocated resources
+SINGULARITY_TMPDIR: /tmp
+TMPDIR: /tmp
+Filesystem                             Size  Used Avail Use% Mounted on
+/dev/mapper/extra_vg-scratch_local_lv  200G     0  200G   0% /tmp
+INFO:    Converting OCI blobs to SIF format
+INFO:    Starting build...
+INFO:    Fetching OCI image...
+INFO:    Extracting OCI image...
+INFO:    Inserting Singularity configuration...
+INFO:    Creating SIF file...

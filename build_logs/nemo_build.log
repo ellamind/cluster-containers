@@ -1,15 +1,15 @@
 ==========================================
 NeMo Container Build
 ==========================================
-Start time: Wed Jan 28 17:22:09 CET 2026
-Version: 25.11.nemotron_3_nano
-Output: /leonardo_work/AIFAC_L01_028/midahl00/cluster-containers/containers/nemo/nemo_25.11.nemotron_3_nano.sif
+Start time: Fri Jan 30 10:50:00 CET 2026
+Version: 25.11.01
+Output: /leonardo_work/AIFAC_L01_028/midahl00/cluster-containers/containers/nemo/nemo_25.11.01.sif
 Log file: /leonardo_work/AIFAC_L01_028/midahl00/cluster-containers/build_logs/nemo_build.log
 Cache dir: /leonardo_scratch/large/userexternal/midahl00/.singularity/cache
 ==========================================
 
-srun: job 33064019 queued and waiting for resources
-srun: job 33064019 has been allocated resources
+srun: job 33160843 queued and waiting for resources
+srun: job 33160843 has been allocated resources
 SINGULARITY_TMPDIR: /tmp
 TMPDIR: /tmp
 Filesystem                             Size  Used Avail Use% Mounted on
@@ -22,5 +22,5 @@ INFO:    Inserting Singularity configuration...
 INFO:    Creating SIF file...
 
 ==========================================
-End time: Wed Jan 28 17:48:06 CET 2026
+End time: Fri Jan 30 11:15:31 CET 2026
 ==========================================
