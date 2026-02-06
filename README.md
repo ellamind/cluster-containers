@@ -45,6 +45,36 @@ Available containers: `vllm`, `sglang`, `nemo`, `pytorch`, `axolotl`
 
 Build logs are saved to `build_logs/<container>_build.log`.
 
+### Building Custom Containers from a Definition File
+
+To extend a base container with additional packages, you can write an Apptainer definition (`.def`) file and build it on a local machine where you have `sudo`. Building from a definition file requires root privileges, which are not available on Leonardo.
+
+Example definition file (`nemo_polars.def`):
+
+```
+Bootstrap: localimage
+From: nemo_25.11.nemotron_3_nano.sif
+
+%post
+    pip install polars
+
+%labels
+    Author ellamind
+    Description NeMo with polars
+```
+
+Build locally and transfer to Leonardo:
+
+```bash
+# On your local machine (requires sudo)
+sudo singularity build nemo_polars.sif nemo_polars.def
+
+# Transfer to Leonardo
+scp nemo_polars.sif leonardo:$WORK/cluster-containers/containers/nemo/
+```
+
+> **Tip:** Use `Bootstrap: localimage` to build from a `.sif` file already on disk. To build from a remote Docker image instead, use `Bootstrap: docker` with `From: nvcr.io/nvidia/nemo:25.11.nemotron_3_nano`.
+
 ## Uploading
 
 Upload built containers to the HF dataset repository:
