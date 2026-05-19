@@ -1,0 +1,27 @@
+==========================================
+NeMo Curator Container Build
+==========================================
+Start time: Tue May 19 09:34:26 CEST 2026
+Version: 26.02
+Docker image: nvcr.io/nvidia/nemo-curator:26.02
+Output: /leonardo_work/AIFAC_L01_028/midahl00/cluster-containers/containers/nemo-curator/nemo-curator_26.02.sif
+Log file: /leonardo_work/AIFAC_L01_028/midahl00/cluster-containers/build_logs/nemo-curator_build.log
+Cache dir: /leonardo_scratch/large/userexternal/midahl00/.singularity/cache
+==========================================
+
+srun: job 41884240 queued and waiting for resources
+srun: job 41884240 has been allocated resources
+SINGULARITY_TMPDIR: /tmp
+TMPDIR: /tmp
+Filesystem                             Size  Used Avail Use% Mounted on
+/dev/mapper/extra_vg-scratch_local_lv  200G     0  200G   0% /tmp
+INFO:    Converting OCI blobs to SIF format
+INFO:    Starting build...
+INFO:    Fetching OCI image...
+INFO:    Extracting OCI image...
+INFO:    Inserting Singularity configuration...
+INFO:    Creating SIF file...
+
+==========================================
+End time: Tue May 19 09:55:55 CEST 2026
+==========================================

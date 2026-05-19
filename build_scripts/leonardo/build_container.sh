@@ -13,9 +13,10 @@ set -euo pipefail
 # -----------------------------------------------------------------------------
 
 declare -A DEFAULT_TAGS=(
-    [vllm]="v0.14.1"
-    [sglang]="v0.5.7"
-    [nemo]="25.11.nemotron_3_nano"
+    [vllm]="v0.21.0-cu129"
+    [sglang]="v0.5.12-cu129"
+    [nemo]="26.04"
+    [nemo-curator]="26.02"
     [pytorch]="26.01-py3"
     [axolotl]="main-py3.12-cu129-2.9.1"
 )
@@ -24,6 +25,7 @@ declare -A DOCKER_IMAGES=(
     [vllm]="vllm/vllm-openai"
     [sglang]="lmsysorg/sglang"
     [nemo]="nvcr.io/nvidia/nemo"
+    [nemo-curator]="nvcr.io/nvidia/nemo-curator"
     [pytorch]="nvcr.io/nvidia/pytorch"
     [axolotl]="axolotlai/axolotl"
 )
@@ -32,6 +34,7 @@ declare -A SIF_PREFIXES=(
     [vllm]="vllm-openai"
     [sglang]="sglang"
     [nemo]="nemo"
+    [nemo-curator]="nemo-curator"
     [pytorch]="pytorch"
     [axolotl]="axolotl"
 )
@@ -40,6 +43,7 @@ declare -A DISPLAY_NAMES=(
     [vllm]="vLLM"
     [sglang]="SGLang"
     [nemo]="NeMo"
+    [nemo-curator]="NeMo Curator"
     [pytorch]="PyTorch"
     [axolotl]="Axolotl"
 )

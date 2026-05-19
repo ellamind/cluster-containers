@@ -6,10 +6,14 @@ Apptainer/Singularity container images for HPC clusters.
 
 | Container | Version | Image Path | Docker Source |
 |-----------|---------|------------|---------------|
+| vLLM | v0.21.0-cu129 | `containers/vllm/vllm-openai_v0.21.0-cu129.sif` | `vllm/vllm-openai` |
 | vLLM | v0.14.1 | `containers/vllm/vllm-openai_v0.14.1.sif` | `vllm/vllm-openai` |
 | vLLM | v0.13.0 | `containers/vllm/vllm-openai_v0.13.0.sif` | `vllm/vllm-openai` |
+| SGLang | v0.5.12-cu129 | `containers/sglang/sglang_v0.5.12-cu129.sif` | `lmsysorg/sglang` |
 | SGLang | v0.5.7 | `containers/sglang/sglang_v0.5.7.sif` | `lmsysorg/sglang` |
+| NeMo | 26.04 | `containers/nemo/nemo_26.04.sif` | `nvcr.io/nvidia/nemo` |
 | NeMo | 25.11.nemotron_3_nano | `containers/nemo/nemo_25.11.nemotron_3_nano.sif` | `nvcr.io/nvidia/nemo` |
+| NeMo Curator | 26.02 | `containers/nemo-curator/nemo-curator_26.02.sif` | `nvcr.io/nvidia/nemo-curator` |
 | PyTorch | 26.01-py3 | `containers/pytorch/pytorch_26.01-py3.sif` | `nvcr.io/nvidia/pytorch` |
 | Axolotl | main-py3.12-cu129-2.9.1 | `containers/axolotl/axolotl_main-py3.12-cu129-2.9.1.sif` | `axolotlai/axolotl` |
 
@@ -41,7 +45,7 @@ Build scripts are in `./build_scripts`. We currently build containers on Leonard
 TAG=v0.14.1 ./build_scripts/leonardo/build_container.sh vllm
 ```
 
-Available containers: `vllm`, `sglang`, `nemo`, `pytorch`, `axolotl`
+Available containers: `vllm`, `sglang`, `nemo`, `nemo-curator`, `pytorch`, `axolotl`
 
 Build logs are saved to `build_logs/<container>_build.log`.
 
