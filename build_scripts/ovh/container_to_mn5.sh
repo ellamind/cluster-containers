@@ -14,8 +14,8 @@
 #
 # Installed by the proxy playbook (model-factory: infra/proxy) as
 # /usr/local/bin/container-to-mn5. Needs the `mn5` ssh alias the playbook
-# sets up, and for a build a Hugging Face token with write access to the
-# dataset (`uvx --from huggingface_hub==2.4.0 hf auth login`).
+# sets up. Hugging Face token: HF_TOKEN if set, else the shared one the
+# playbook puts in /etc/container-to-mn5/hf-token (write access to the dataset).
 #
 # The box's main job is the MN5 proxy, so the build stays small: squashing uses
 # BUILD_CPUS cores (default 8 of 16), at nice 19 and idle I/O priority, and the
@@ -41,14 +41,18 @@ if "${SSH[@]}" "$HOST" "test -e $q"; then
     exit 0
 fi
 
+TOKEN_FILE=/etc/container-to-mn5/hf-token
+if [[ -z ${HF_TOKEN:-} && -r $TOKEN_FILE ]]; then
+    HF_TOKEN=$(<"$TOKEN_FILE")
+    export HF_TOKEN
+fi
+
 ON_HF=0
 curl -sfIL -o /dev/null "https://huggingface.co/datasets/${HF_REPO}/resolve/main/${HF_PATH}" && ON_HF=1
-if [[ $ON_HF == 0 ]]; then
-    "${HF[@]}" auth whoami >/dev/null 2>&1 || {
-        echo "not on ${HF_REPO} yet, and no Hugging Face token to publish a build:" >&2
-        echo "run 'uvx --from huggingface_hub==2.4.0 hf auth login' (write access to ${HF_REPO})" >&2
-        exit 1
-    }
+if [[ $ON_HF == 0 && -z ${HF_TOKEN:-} ]]; then
+    echo "not on ${HF_REPO} yet, and no Hugging Face token to publish a build:" >&2
+    echo "$TOKEN_FILE is missing or unreadable (proxy playbook), and HF_TOKEN is not set" >&2
+    exit 1
 fi
 
 LOCK=/var/lib/mn5-transfer.lock

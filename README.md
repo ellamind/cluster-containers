@@ -41,7 +41,7 @@ journalctl --user -fu sif-sglang
 
 - In the MN5 cache already: prints the path. On the HF dataset: downloads it and copies it. Nowhere yet: builds it, uploads it to the HF dataset, then copies it.
 - The copy is checked by sha256 on MN5 and is group-readable for `ehpc532`.
-- Setup: your OVH user and MN5 login in the proxy playbook (it gives you the `mn5` ssh alias). To build, a Hugging Face token with write access to `ellamind/containers`: `uvx --from huggingface_hub==2.4.0 hf auth login`, once.
+- Setup: your OVH user and MN5 login in the proxy playbook. It gives you the `mn5` ssh alias, and the Hugging Face token for uploads (`/etc/container-to-mn5/hf-token`, write access to `ellamind/containers`; `HF_TOKEN` overrides it).
 - The box is the MN5 proxy first: the squash step uses 8 of its 16 cores (`BUILD_CPUS`), at nice 19 and idle disk priority, and one run at a time shares the box with `hf-to-mn5` (a lock). A build needs ~2.5 × the image's download size of free disk.
 - The box cannot run images (Ubuntu blocks the user namespaces `apptainer exec` needs): test them on MN5 in a job.
 
