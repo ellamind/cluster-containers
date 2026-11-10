@@ -5,90 +5,22 @@ set -euo pipefail
 # Container Build Script for Leonardo
 # Usage: ./build_container.sh <container_name> [TAG=version]
 # Example: TAG=v0.14.1 ./build_container.sh vllm
+# Containers and default tags: ../containers.sh
 # =============================================================================
 
-# -----------------------------------------------------------------------------
-# Container Configurations
-# Each container needs: DEFAULT_TAG, DOCKER_IMAGE, SIF_PREFIX
-# -----------------------------------------------------------------------------
-
-declare -A DEFAULT_TAGS=(
-    [vllm]="v0.21.0-cu129"
-    [sglang]="v0.5.12-cu129"
-    [nemo]="26.04"
-    [nemo-curator]="26.02"
-    [pytorch]="26.01-py3"
-    [axolotl]="main-py3.12-cu129-2.9.1"
-)
-
-declare -A DOCKER_IMAGES=(
-    [vllm]="vllm/vllm-openai"
-    [sglang]="lmsysorg/sglang"
-    [nemo]="nvcr.io/nvidia/nemo"
-    [nemo-curator]="nvcr.io/nvidia/nemo-curator"
-    [pytorch]="nvcr.io/nvidia/pytorch"
-    [axolotl]="axolotlai/axolotl"
-)
-
-declare -A SIF_PREFIXES=(
-    [vllm]="vllm-openai"
-    [sglang]="sglang"
-    [nemo]="nemo"
-    [nemo-curator]="nemo-curator"
-    [pytorch]="pytorch"
-    [axolotl]="axolotl"
-)
-
-declare -A DISPLAY_NAMES=(
-    [vllm]="vLLM"
-    [sglang]="SGLang"
-    [nemo]="NeMo"
-    [nemo-curator]="NeMo Curator"
-    [pytorch]="PyTorch"
-    [axolotl]="Axolotl"
-)
-
-# -----------------------------------------------------------------------------
-# Argument parsing
-# -----------------------------------------------------------------------------
-
-if [[ $# -lt 1 ]]; then
-    echo "Usage: $0 <container_name> [TAG=version]"
-    echo ""
-    echo "Available containers:"
-    for name in "${!DEFAULT_TAGS[@]}"; do
-        echo "  - $name (default: ${DEFAULT_TAGS[$name]})"
-    done
-    exit 1
-fi
-
-CONTAINER_NAME="$1"
-
-if [[ ! -v "DEFAULT_TAGS[$CONTAINER_NAME]" ]]; then
-    echo "Error: Unknown container '$CONTAINER_NAME'"
-    echo ""
-    echo "Available containers:"
-    for name in "${!DEFAULT_TAGS[@]}"; do
-        echo "  - $name"
-    done
-    exit 1
-fi
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "${SCRIPT_DIR}/../containers.sh"
+container_config "$@"
 
 # -----------------------------------------------------------------------------
 # Configuration
 # -----------------------------------------------------------------------------
 
-TAG="${TAG:-${DEFAULT_TAGS[$CONTAINER_NAME]}}"
-DOCKER_IMAGE="${DOCKER_IMAGES[$CONTAINER_NAME]}"
-SIF_PREFIX="${SIF_PREFIXES[$CONTAINER_NAME]}"
-DISPLAY_NAME="${DISPLAY_NAMES[$CONTAINER_NAME]}"
-
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 OUTPUT_DIR="${REPO_ROOT}/containers/${CONTAINER_NAME}"
 LOG_DIR="${REPO_ROOT}/build_logs"
 LOG_FILE="${LOG_DIR}/${CONTAINER_NAME}_build.log"
-SIF_FILE="${OUTPUT_DIR}/${SIF_PREFIX}_${TAG}.sif"
+SIF_FILE="${OUTPUT_DIR}/${SIF_NAME}"
 
 # Cache stays on SCRATCH (persists between jobs)
 export SINGULARITY_CACHEDIR="$SCRATCH/.singularity/cache"

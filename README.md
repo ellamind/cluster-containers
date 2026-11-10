@@ -1,25 +1,51 @@
 # cluster-containers
 
-Apptainer/Singularity container images for HPC clusters.
+Apptainer/Singularity images (SIF) for our clusters, above all a cache of images for MareNostrum 5:
+
+- [ellamind/containers](https://huggingface.co/datasets/ellamind/containers) on Hugging Face holds every built image, as `<container>/<prefix>_<tag>.sif`.
+- On MN5, `/gpfs/scratch/ehpc532/containers/` holds the same files, in the same layout, for everyone in `ehpc532`. Use them from there; don't keep private copies.
+
+Get an image onto MN5 with `container-to-mn5` on the OVH proxy box (below). It copies from the HF dataset, or builds and publishes the image first if it isn't there yet.
 
 ## Available Containers
 
-| Container | Version | Image Path | Docker Source |
-|-----------|---------|------------|---------------|
-| vLLM | v0.21.0-cu129 | `containers/vllm/vllm-openai_v0.21.0-cu129.sif` | `vllm/vllm-openai` |
-| vLLM | v0.14.1 | `containers/vllm/vllm-openai_v0.14.1.sif` | `vllm/vllm-openai` |
-| vLLM | v0.13.0 | `containers/vllm/vllm-openai_v0.13.0.sif` | `vllm/vllm-openai` |
-| SGLang | v0.5.12-cu129 | `containers/sglang/sglang_v0.5.12-cu129.sif` | `lmsysorg/sglang` |
-| SGLang | v0.5.7 | `containers/sglang/sglang_v0.5.7.sif` | `lmsysorg/sglang` |
-| NeMo | 26.04 | `containers/nemo/nemo_26.04.sif` | `nvcr.io/nvidia/nemo` |
-| NeMo | 25.11.nemotron_3_nano | `containers/nemo/nemo_25.11.nemotron_3_nano.sif` | `nvcr.io/nvidia/nemo` |
-| NeMo Curator | 26.02 | `containers/nemo-curator/nemo-curator_26.02.sif` | `nvcr.io/nvidia/nemo-curator` |
-| PyTorch | 26.01-py3 | `containers/pytorch/pytorch_26.01-py3.sif` | `nvcr.io/nvidia/pytorch` |
-| Axolotl | main-py3.12-cu129-2.9.1 | `containers/axolotl/axolotl_main-py3.12-cu129-2.9.1.sif` | `axolotlai/axolotl` |
+| Container | Docker Source | File name |
+|-----------|---------------|-----------|
+| `vllm` | `vllm/vllm-openai` | `vllm/vllm-openai_<tag>.sif` |
+| `sglang` | `lmsysorg/sglang` | `sglang/sglang_<tag>.sif` |
+| `nemo` | `nvcr.io/nvidia/nemo` | `nemo/nemo_<tag>.sif` |
+| `nemo-curator` | `nvcr.io/nvidia/nemo-curator` | `nemo-curator/nemo-curator_<tag>.sif` |
+| `pytorch` | `nvcr.io/nvidia/pytorch` | `pytorch/pytorch_<tag>.sif` |
+| `axolotl` | `axolotlai/axolotl` | `axolotl/axolotl_<tag>.sif` |
 
-## Downloading
+`<tag>` is the Docker tag. Tags ending in `-aarch64` are for ARM clusters (JUPITER); the others are x86_64. A new container is one line per table in `build_scripts/containers.sh`.
 
-Pre-built images are available on Hugging Face at [ellamind/containers](https://huggingface.co/datasets/ellamind/containers).
+```bash
+# Published images
+curl -s 'https://huggingface.co/api/datasets/ellamind/containers/tree/main?recursive=true' \
+  | jq -r '.[] | select(.path | endswith(".sif")) | .path'
+# On MN5
+ls /gpfs/scratch/ehpc532/containers/*/
+```
+
+## MareNostrum 5: `container-to-mn5`
+
+MN5 has no internet; the OVH proxy box (`ovh-proxy-1`) fills the cache. Its playbook (model-factory `infra/proxy`) installs Apptainer and this repo there, and links `build_scripts/ovh/container_to_mn5.sh` as `container-to-mn5`.
+
+```bash
+# on ovh-proxy-1, as yourself; detached, so the laptop can disconnect
+systemd-run --user --collect --unit sif-sglang -E TAG=mistral-large-4 container-to-mn5 sglang
+journalctl --user -fu sif-sglang
+# -> /gpfs/scratch/ehpc532/containers/sglang/sglang_mistral-large-4.sif
+```
+
+- In the MN5 cache already: prints the path. On the HF dataset: downloads it and copies it. Nowhere yet: builds it, uploads it to the HF dataset, then copies it.
+- The copy is checked by sha256 on MN5 and is group-readable for `ehpc532`.
+- Setup: your OVH user and MN5 login in the proxy playbook (it gives you the `mn5` ssh alias). To build, a Hugging Face token with write access to `ellamind/containers`: `uvx --from huggingface_hub==2.4.0 hf auth login`, once.
+- The box is the MN5 proxy first: the squash step uses 8 of its 16 cores (`BUILD_CPUS`), at nice 19 and idle disk priority, and one run at a time shares the box with `hf-to-mn5` (a lock). A build needs ~2.5 × the image's download size of free disk.
+- The box cannot run images (Ubuntu blocks the user namespaces `apptainer exec` needs): test them on MN5 in a job.
+
+## Downloading elsewhere
 
 ```bash
 # Download all containers
@@ -33,9 +59,9 @@ mkdir -p containers/vllm
 wget -P containers/vllm https://huggingface.co/datasets/ellamind/containers/resolve/main/vllm/vllm-openai_v0.14.1.sif
 ```
 
-## Building
+## Building on Leonardo
 
-Build scripts are in `./build_scripts`. We currently build containers on Leonardo using the budget free partition `lrd_all_serial`.
+Uses the budget free partition `lrd_all_serial`. Upload the result to the HF dataset (see Uploading).
 
 ```bash
 # Build with default version
@@ -44,8 +70,6 @@ Build scripts are in `./build_scripts`. We currently build containers on Leonard
 # Build with specific version
 TAG=v0.14.1 ./build_scripts/leonardo/build_container.sh vllm
 ```
-
-Available containers: `vllm`, `sglang`, `nemo`, `nemo-curator`, `pytorch`, `axolotl`
 
 Build logs are saved to `build_logs/<container>_build.log`.
 
