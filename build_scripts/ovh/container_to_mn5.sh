@@ -32,6 +32,7 @@ HF_PATH="${CONTAINER_NAME}/${SIF_NAME}"
 DEST="${CACHE:-/gpfs/scratch/ehpc532/containers}/${HF_PATH}"
 HOST=mn5
 HF=(uvx --quiet --from huggingface_hub==2.4.0 hf)
+export HF_HUB_DISABLE_PROGRESS_BARS=1   # they fill the journal under systemd-run
 SSH=(ssh -o BatchMode=yes -o ConnectTimeout=60 -o ServerAliveInterval=30)
 q=$(printf %q "$DEST")
 log() { echo "$(date +%T) $*"; }
